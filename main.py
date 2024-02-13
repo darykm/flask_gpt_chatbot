@@ -16,7 +16,15 @@ def index():
 @app.route('/gpt4', methods=['GET', 'POST'])
 def gpt4():
     user_input = request.args.get('user_input') if request.method == 'GET' else request.form['user_input']
-    messages = [{"role": "user", "content": user_input}]
+    chat_completion = client.chat.completions.create(
+        messages=[
+            {
+                "role": "user",
+                "content": user_input
+            }
+        ],
+        model="gpt-3.5-turbo",
+    )
 
     try:
         response = client.chat.completions.create(
