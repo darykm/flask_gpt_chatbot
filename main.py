@@ -16,22 +16,19 @@ def index():
 @app.route('/gpt4', methods=['GET', 'POST'])
 def gpt4():
     user_input = request.args.get('user_input') if request.method == 'GET' else request.form['user_input']
-    chat_completion = client.chat.completions.create(
-        messages=[
-            {
-                "role": "user",
-                "content": user_input
-            }
-        ],
-        model="gpt-3.5-turbo",
-    )
+
 
     try:
-        response = client.chat.completions.create(
+        chat_completion = client.chat.completions.create(
+            messages=[
+                {
+                    "role": "user",
+                    "content": user_input
+                }
+            ],
             model="gpt-3.5-turbo",
-            messages=messages
         )
-        content = response.choices[0].message["content"]
+        content = chat_completion.choices[0].message["content"]
     except openai.RateLimitError:
         content = "The server is experiencing a high volume of requests. Please try again later."
 
